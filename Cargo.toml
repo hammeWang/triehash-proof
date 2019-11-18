@@ -1,0 +1,31 @@
+[package]
+name = "triehash-proof"
+version = "0.1.0"
+authors = ["Parity Technologies <admin@parity.io>", "hammeWang <dsw0602@foxmail.com>"]
+edition = "2018"
+
+
+[dependencies]
+hash-db = { version = "0.15", default-features = false }
+rlp = {version = "0.4", default-features = false}
+rstd = { package = "sr-std", git = "https://github.com/paritytech/subtrate.git", rev = "d2c4b0dbd", default-features = false }
+
+[dev-dependencies.ethereum-types]
+version = "0.7"
+
+[dev-dependencies.hex-literal]
+version = "0.2"
+
+[dev-dependencies.keccak-hasher]
+version = "0.15"
+
+[dev-dependencies.tiny-keccak]
+version = "1.4.2"
+
+[features]
+deafault = ["std"]
+std = [
+    "hash-db/std",
+    "rlp/std",
+    'rstd/std',
+]
