@@ -18,21 +18,33 @@
 //!
 //! This module should be used to generate trie root hash.
 
-extern crate hash_db;
-extern crate rlp;
+#![cfg_attr(not(feature = "std"), no_std)]
 #[cfg(test)]
 extern crate keccak_hasher;
 #[cfg(test)]
 #[macro_use]
 extern crate hex_literal;
 
+#[cfg(not(feature = "std"))]
+#[macro_use]
+extern crate alloc;
 
-use rstd::collections::btree_map::BTreeMap;
-use rstd::cmp;
 #[cfg(not(feature = "std"))]
 use core::iter::once;
 use hash_db::Hasher;
 use rlp::RlpStream;
+
+extern crate hash_db;
+
+#[cfg(feature = "std")]
+use std::collections::BTreeMap;
+#[cfg(feature = "std")]
+use std::cmp;
+
+#[cfg(not(feature = "std"))]
+use alloc::{collections::btree_map::BTreeMap, vec::Vec};
+#[cfg(not(feature = "std"))]
+use core::cmp;
 
 fn shared_prefix_len<T: Eq>(first: &[T], second: &[T]) -> usize {
     first.iter()
@@ -232,6 +244,7 @@ fn hash256aux<H, A, B>(input: &[(A, B)], pre_len: usize, stream: &mut RlpStream)
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     extern crate ethereum_types;
     use super::{trie_root, shared_prefix_len, hex_prefix_encode};
     use keccak_hasher::KeccakHasher;
